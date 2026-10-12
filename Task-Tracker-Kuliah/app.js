@@ -8,6 +8,7 @@ const daftar = document.getElementById("daftar");
 const counter = document.getElementById("counter");
 const pesanKosong = document.getElementById("kosong");
 const tombolFilter = document.querySelectorAll(".filter button");
+const tombolHapusSelesai = document.getElementById("hapus-selesai");
 
 // 2. State (data utama aplikasi)
 const STORAGE_KEY = "task-tracker-kuliah";
@@ -71,7 +72,7 @@ function render() {
       li.classList.add("terlambat");
       meta.textContent += " · terlambat!";
     }
-    
+
     info.append(judul, meta);
 
     const hapus = document.createElement("button");
@@ -98,7 +99,12 @@ function render() {
     pesanKosong.textContent = "Tidak ada tugas di filter ini. 🎀";
   }
 
-  // f. Tandai tombol filter aktif dengan class "on"
+  // f. Tombol hapus-selesai hanya muncul kalau ada tugas yang selesai
+  tombolHapusSelesai.hidden = !tasks.some(function (t) {
+    return t.selesai;
+  });
+
+  // g. Tandai tombol filter aktif dengan class "on"
   tombolFilter.forEach(function (btn) {
     btn.classList.toggle("on", btn.dataset.filter === filterAktif);
   });
@@ -172,5 +178,14 @@ tombolFilter.forEach(function (btn) {
   });
 });
 
-// 8. Tampilkan data saat halaman pertama dibuka
+// 8. Hapus semua tugas yang sudah selesai
+tombolHapusSelesai.addEventListener("click", function () {
+  tasks = tasks.filter(function (t) {
+    return !t.selesai;
+  });
+  simpanKeStorage();
+  render();
+});
+
+// 9. Tampilkan data saat halaman pertama dibuka
 render();
