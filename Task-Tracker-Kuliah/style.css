@@ -196,3 +196,12 @@ li.selesai .judul {
   color: var(--teks-pudar);
   padding: 16px 0;
 }
+
+li.terlambat {
+  border-color: var(--pink-400);
+  background: var(--pink-100);
+}
+li.terlambat .meta {
+  color: #c81e5b;
+  font-weight: 600;
+}

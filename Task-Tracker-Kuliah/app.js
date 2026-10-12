@@ -30,6 +30,8 @@ function simpanKeStorage() {
 
 // 4. render(): SATU fungsi yang membangun seluruh tampilan
 function render() {
+  // Tanggal hari ini format YYYY-MM-DD (zona waktu lokal)
+  const hariIni = new Date().toLocaleDateString("en-CA");
   // a. Filter sesuai tombol yang aktif
   let tampil = tasks.filter(function (t) {
     if (filterAktif === "aktif") return !t.selesai;
@@ -64,6 +66,12 @@ function render() {
     meta.className = "meta";
     meta.textContent = t.matkul + " · deadline " + t.deadline;
 
+    // Belum selesai + deadline sudah lewat = terlambat
+    if (!t.selesai && t.deadline < hariIni) {
+      li.classList.add("terlambat");
+      meta.textContent += " · terlambat!";
+    }
+    
     info.append(judul, meta);
 
     const hapus = document.createElement("button");
